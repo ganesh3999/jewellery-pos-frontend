@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import "./App.css"; // We'll add some styles
+import "./App.css";
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -7,14 +7,17 @@ function App() {
   const [message, setMessage] = useState("");
   const [editingId, setEditingId] = useState(null);
 
+  const BASE_URL = "https://jewellery-pos.onrender.com"; // Use your Render backend URL
+
   // Fetch all products
   const fetchProducts = async () => {
     try {
-      const res = await fetch("https://jewellery-pos.onrender.com/products");
-      const data = await res.json();   
+      const res = await fetch(`${BASE_URL}/products`);
+      const data = await res.json();
       setProducts(data);
     } catch (err) {
       console.error(err);
+      setMessage("Error fetching products");
     }
   };
 
@@ -27,7 +30,7 @@ function App() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      let url = "http://localhost:4000/products";
+      let url = `${BASE_URL}/products`;
       let method = "POST";
 
       if (editingId) {
@@ -69,7 +72,7 @@ function App() {
 
   const handleDelete = async (id) => {
     try {
-      const res = await fetch(`http://localhost:4000/products/${id}`, { method: "DELETE" });
+      const res = await fetch(`${BASE_URL}/products/${id}`, { method: "DELETE" });
       const data = await res.json();
       if (res.ok) {
         setMessage(data.message);
